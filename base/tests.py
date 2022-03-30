@@ -26,11 +26,11 @@ class BaseTests(APITestCase):
 
     def test_get_product(self):
         """
-        Ensure we can get list of 6 products.
+        Ensure we can get a single product detail.
         """
         print('test_get_product')
         url = reverse('products')
-        print(url+'1')
+        
         response = self.client.get(url+'1', format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Airpods Wireless Bluetooth Headphones')
