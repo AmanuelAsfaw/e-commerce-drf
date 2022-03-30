@@ -1,3 +1,4 @@
+from itertools import product
 from operator import mod
 from statistics import mode
 from unicodedata import category, name
@@ -20,3 +21,14 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=200, null=True, blank=True)
+    comment = models.TextField(null=True, blank=True)
+    rating = models.DecimalField(max_digits=7, decimal_places=2)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self) -> str:
+        return str(self.rating)
