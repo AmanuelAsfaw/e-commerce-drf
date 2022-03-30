@@ -1,3 +1,4 @@
+from tkinter.messagebox import NO
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -27,3 +28,13 @@ def getRoutes(request):
 @api_view(['GET'])
 def getProducts(request):
     return Response(products)
+    
+@api_view(['GET'])
+def getProduct(request, pk):
+    product = None
+    for prdt in products:
+        if prdt['_id'] == pk:
+            product = prdt
+            break
+
+    return Response(product)
