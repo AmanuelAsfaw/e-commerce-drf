@@ -5,7 +5,10 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from base.serailizers import ProductSerializer
+
 from .products import products
+from .models import Product
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -27,7 +30,9 @@ def getRoutes(request):
 
 @api_view(['GET'])
 def getProducts(request):
-    return Response(products)
+    products = Product.objects.all()
+    serailizer = ProductSerializer(products, many=True)
+    return Response(serailizer.data)
     
 @api_view(['GET'])
 def getProduct(request, pk):
