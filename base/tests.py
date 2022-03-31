@@ -1,9 +1,25 @@
-from django.urls import include, path, reverse
+from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework import status
 
+from .products import products
+from .models import Product
 class BaseTests(APITestCase):
-
+    def setUp(self) -> None:
+        for product in products:
+            prdt = Product.objects.create(
+                name= product['name'],
+                image= product['image'],
+                description= product['description'],
+                brand= product['brand'],
+                category= product['category'],
+                price= product['price'],
+                countInStock= product['countInStock'],
+                rating= product['rating'],
+                numReviews= product['numReviews']
+            )
+            prdt.save()
+        
     def test_get_routes(self):
         """
         Ensure we can get list of 8 routes.
