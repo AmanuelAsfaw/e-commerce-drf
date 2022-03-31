@@ -7,7 +7,6 @@ from rest_framework.response import Response
 
 from base.serailizers import ProductSerializer
 
-from .products import products
 from .models import Product
 
 @api_view(['GET'])
@@ -36,10 +35,7 @@ def getProducts(request):
     
 @api_view(['GET'])
 def getProduct(request, pk):
-    product = None
-    for prdt in products:
-        if prdt['_id'] == pk:
-            product = prdt
-            break
+    product = Product.objects.get(pk=pk)
+    serailizer = ProductSerializer(product, many=False)
 
-    return Response(product)
+    return Response(serailizer.data)
