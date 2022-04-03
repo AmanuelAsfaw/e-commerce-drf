@@ -8,6 +8,37 @@ from base.serailizers import ProductSerializer
 
 from .models import Product
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+from django.contrib.auth.models import update_last_login
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    # @classmethod
+    # def get_token(cls, user):
+    #     token = super().get_token(user)
+
+    #     # Add custom claims
+    #     token['username'] = user.username
+    #     token['message'] = 'Hello You get the access now!'
+    #     # ...
+
+    #     return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        refresh = self.get_token(self.user)
+
+        data["username"] = self.user.username
+        data["email"] = self.user.email
+
+        return data
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
