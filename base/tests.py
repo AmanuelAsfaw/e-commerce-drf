@@ -18,17 +18,7 @@ class BaseTests(APITestCase):
                 rating= product['rating'],
                 numReviews= product['numReviews']
             )
-            prdt.save()
-        
-    def test_get_routes(self):
-        """
-        Ensure we can get list of 8 routes.
-        """
-        print('test_get_routes')
-        url = reverse('routes')
-        response = self.client.get(url, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 12)
+            prdt.save()        
 
     def test_get_products(self):
         """
