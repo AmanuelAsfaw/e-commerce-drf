@@ -46,7 +46,11 @@ def getRoutes(request):
         
         '/api/products/delete/<id>/',
         '/api/products/<update>/<id>/',
-        '/api/users/profile/'
+
+        '/api/users/profile/',
+        '/api/users/register/',
+        '/api/users/token/',
+        '/api/users/'
     ]
     return Response(routes)
 
