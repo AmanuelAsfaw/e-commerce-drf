@@ -1,3 +1,5 @@
+import sys
+import django
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
@@ -14,11 +16,11 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import status
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    
+
     def validate(self, attrs):
         data = super().validate(attrs)
 
-        serializer = UserSerializerWithToken(self.user).data  
+        serializer = UserSerializerWithToken(self.user).data
         for key, value in serializer.items():
             data[key] = value
         return data
@@ -40,8 +42,11 @@ def registerUser(request):
         )
         serializers = UserSerializerWithToken(user, many=False)
         return Response(serializers.data)
-    except:
-        message = { 'detail': 'User with this email already exists'}
+    except django.db.utils.IntegrityError as e:
+        message = { 'detail': 'User with this email already exists' , 'error' : str(sys.exc_info()[0])}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        message = { 'detail': 'Another exception' , 'error' : str(sys.exc_info()[0])}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
